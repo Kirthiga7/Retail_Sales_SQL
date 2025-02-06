@@ -79,8 +79,7 @@ select distinct category from retail_sales;
 select * from retail_sales 
 where sale_date='2022-11-05';
 
----Q2 Retrieve all transactions where the category is 'Clothing'
---and the quantity sold is more than 10 in the month of Nov-2022
+--Q2 Retrieve all transactions where the category is 'Clothing' and the quantity sold is more than 10 in the month of Nov-2022
 select * from retail_sales
 where 
 	category ='Clothing'
@@ -96,8 +95,7 @@ select category,
 from retail_sales
 group by category;
 
--- Q4 Find the average age of customers who purchased
---items from the 'Beauty' category.
+-- Q4 Find the average age of customers who purchased items from the 'Beauty' category.
 select round(avg(age),2) as average_age 
 from retail_sales
 where category= 'Beauty';
@@ -115,14 +113,13 @@ group by 2,3;
 select year,month,avg_sale
 from
 (
-	select 
-		extract(year from sale_date) as year,
-		extract(month from sale_date) as month,
+  select 
+	extract(year from sale_date) as year,
+	extract(month from sale_date) as month,
     	avg(total_sale) as avg_sale,
-		rank() over(partition by extract(year from sale_date)
-	                order by avg(total_sale) desc)
-	from retail_sales
-	group by 1,2
+	rank() over(partition by extract(year from sale_date) order by avg(total_sale) desc)
+  from retail_sales
+  group by 1,2
 ) as temp_table
 where rank=1;
 
@@ -138,8 +135,7 @@ select count(distinct customer_id)as unique_customers, category
 from retail_sales
 group by 2;
 
---Q10 Create each shift and number of orders (Example 
---Morning <=12, Afternoon Between 12 & 17, Evening >17)
+--Q10 Create each shift and number of orders (Example Morning <=12, Afternoon Between 12 & 16, Evening >16)
 with hourly_sales
 as(
 select * ,
@@ -154,9 +150,3 @@ select count(*) as total_orders, shift
 from hourly_sales
 group by shift;
 
-select extract(hour from current_time);
-select extract(minute from current_time);
-select extract(second from current_time);
-select extract(day from current_date);
-select extract(month from current_date);
-select extract(year from current_date);
